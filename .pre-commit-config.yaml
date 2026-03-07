@@ -1,0 +1,75 @@
+# .pre-commit-config.yaml
+# Run `pre-commit install` after cloning the repo.
+# Run `uvx pre-commit autoupdate` to update revs.
+
+default_language_version:
+  python: python3.12
+
+repos:
+  # ---------------------------------------------------------------------------
+  # General hygiene (fast, no external tools needed)
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-toml
+      - id: check-json
+      - id: check-added-large-files
+        args: [--maxkb=500]
+      - id: check-merge-conflict
+      - id: debug-statements       # no breakpoint()/pdb in committed code
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  # ---------------------------------------------------------------------------
+  # Ruff — linting then formatting (order matters: lint first so fixes
+  # are reformatted correctly by the formatter)
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.10
+    hooks:
+      - id: ruff-check
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  # ---------------------------------------------------------------------------
+  # Mypy — static type checking
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.13.0
+    hooks:
+      - id: mypy
+        # List stubs your project uses so mypy can find them in pre-commit's
+        # isolated env:
+        additional_dependencies:
+          - anyio>=4.0
+          - pytest>=8.0
+        args: [--config-file=pyproject.toml]
+        # Run only on src (tests use different strictness)
+        files: ^src/
+
+  # ---------------------------------------------------------------------------
+  # Commit message format — Conventional Commits
+  # ---------------------------------------------------------------------------
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args:
+          # Allowed types (keep in sync with your changelog tooling)
+          - feat
+          - fix
+          - docs
+          - style
+          - refactor
+          - perf
+          - test
+          - build
+          - ci
+          - chore
+          - revert
