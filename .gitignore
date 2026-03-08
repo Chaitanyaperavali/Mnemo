@@ -47,6 +47,8 @@ htmlcov/
 # Docs build
 site/
 
+ARCHITECTURE.md
+
 # Environment files — never commit secrets
 .env
 .env.*

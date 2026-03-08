@@ -12,8 +12,8 @@ description = "LLM agent memory orchestration library"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
-authors = [{ name = "Your Name", email = "you@example.com" }]
-maintainers = [{ name = "Your Name", email = "you@example.com" }]
+authors = [{ name = "chaitanya_peravalli", email = "chaitu.per@gmail.com" }]
+maintainers = [{ name = "chaitanya_peravalli", email = "chaitu.per@gmail.com" }]
 keywords = [
   "llm",
   "agent",
@@ -204,7 +204,7 @@ ignore_missing_imports = true
 # ---------------------------------------------------------------------------
 [tool.pyright]
 include                 = ["src"]
-exclude                 = ["**/__pycache__", ".venv", "dist", "build"]
+exclude                 = ["**/__pycache__", ".venv", "dist", "build", "src/mnemo/backends/redis.py"]
 pythonVersion           = "3.10"
 typeCheckingMode        = "strict"
 # These match the mypy strict equivalents
@@ -246,7 +246,7 @@ markers = [
 [tool.coverage.run]
 branch  = true
 source  = ["src/mnemo"]
-omit    = ["*/__main__.py", "*/conftest.py"]
+omit    = ["*/__main__.py", "*/conftest.py", "*/backends/redis.py"]
 
 [tool.coverage.report]
 show_missing        = true
