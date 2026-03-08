@@ -7,7 +7,10 @@ them without pulling in heavy dependencies.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
+
+
+def _str_object_dict() -> dict[str, object]:
+    return {}
 
 
 @dataclass(frozen=True, slots=True)
@@ -22,7 +25,7 @@ class Memory:
     """
 
     content: str
-    metadata: dict[str, Any] = field(default_factory=dict)  # pyright: ignore[reportUnknownVariableType]
+    metadata: dict[str, object] = field(default_factory=_str_object_dict)
     embedding: list[float] | None = None
     memory_id: str | None = None
 
@@ -39,7 +42,7 @@ class MemoryQuery:
     """
 
     text: str
-    filters: dict[str, Any] = field(default_factory=dict)  # pyright: ignore[reportUnknownVariableType]
+    filters: dict[str, object] = field(default_factory=_str_object_dict)
     limit: int = 10
     score_threshold: float = 0.0
 
