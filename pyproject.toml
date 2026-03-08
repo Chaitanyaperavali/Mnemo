@@ -204,11 +204,7 @@ ignore_missing_imports = true
 # ---------------------------------------------------------------------------
 [tool.pyright]
 include                 = ["src"]
-<<<<<<< HEAD
-exclude                 = ["**/__pycache__", ".venv", "dist", "build"]
-=======
 exclude                 = ["**/__pycache__", ".venv", "dist", "build", "src/mnemo/backends/redis.py"]
->>>>>>> 02839a6 (feat(backends): add RedisBackend with RediSearch HNSW vector search)
 pythonVersion           = "3.10"
 typeCheckingMode        = "strict"
 # These match the mypy strict equivalents
@@ -250,11 +246,7 @@ markers = [
 [tool.coverage.run]
 branch  = true
 source  = ["src/mnemo"]
-<<<<<<< HEAD
-omit    = ["*/__main__.py", "*/conftest.py"]
-=======
 omit    = ["*/__main__.py", "*/conftest.py", "*/backends/redis.py"]
->>>>>>> 02839a6 (feat(backends): add RedisBackend with RediSearch HNSW vector search)
 
 [tool.coverage.report]
 show_missing        = true
