@@ -78,4 +78,4 @@ store = MemoryStore(backend=MyBackend())
 
 ## License
 
-MIT
+Apache License 2.0
