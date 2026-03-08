@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# uv
+uv.lock        # ← KEEP in version control for applications; for libraries
+               #   you may omit it so users get fresh resolution.
+               #   Remove this line to track the lockfile.
+
+# Type checkers
+.mypy_cache/
+.pyright/
+.dmypy.json
+dmypy.json
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+
+# Ruff
+.ruff_cache/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Docs build
+site/
+
+# Environment files — never commit secrets
+.env
+.env.*
+!.env.example
