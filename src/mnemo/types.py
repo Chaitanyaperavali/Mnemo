@@ -35,7 +35,7 @@ class MemoryQuery:
         text: Natural-language text to search for.
         filters: Key-value metadata filters (AND logic).
         limit: Maximum number of results to return.
-        score_threshold: Minimum similarity score (0.0–1.0).
+        score_threshold: Minimum similarity score (0.0-1.0).
     """
 
     text: str

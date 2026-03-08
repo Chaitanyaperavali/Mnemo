@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import uuid
-from typing import Any
+from typing import TYPE_CHECKING
 
 from mnemo.protocols import BaseBackend
-from mnemo.types import Memory, MemoryQuery, MemoryResult
+from mnemo.types import Memory, MemoryResult
+
+if TYPE_CHECKING:
+    from mnemo.types import MemoryQuery
 
 
 class InMemoryBackend(BaseBackend):
@@ -24,11 +27,12 @@ class InMemoryBackend(BaseBackend):
         ...         assert mem is not None
     """
 
-    def __init__(self, **kwargs: Any) -> None:
-        super().__init__(**kwargs)
+    def __init__(self) -> None:
+        super().__init__()
         self._store: dict[str, Memory] = {}
 
     async def add(self, memory: Memory) -> str:
+        """Persist a memory and return its assigned ID."""
         self._check_not_closed()
         mid = memory.memory_id or str(uuid.uuid4())
         # Store a fresh copy with the assigned ID
@@ -41,6 +45,7 @@ class InMemoryBackend(BaseBackend):
         return mid
 
     async def get(self, memory_id: str) -> Memory | None:
+        """Retrieve a single memory by its ID."""
         self._check_not_closed()
         return self._store.get(memory_id)
 
@@ -50,9 +55,7 @@ class InMemoryBackend(BaseBackend):
         results: list[MemoryResult] = []
         for memory in self._store.values():
             # Apply metadata filters
-            if not all(
-                memory.metadata.get(k) == v for k, v in query.filters.items()
-            ):
+            if not all(memory.metadata.get(k) == v for k, v in query.filters.items()):
                 continue
             # Naïve scoring: 1.0 if substring match, 0.5 otherwise
             score = 1.0 if query.text.lower() in memory.content.lower() else 0.5
@@ -63,9 +66,11 @@ class InMemoryBackend(BaseBackend):
         return results[: query.limit]
 
     async def delete(self, memory_id: str) -> bool:
+        """Remove a memory by ID, returning True if it existed."""
         self._check_not_closed()
         return self._store.pop(memory_id, None) is not None
 
     async def aclose(self) -> None:
+        """Clear the store and mark the backend as closed."""
         self._store.clear()
         self._closed = True

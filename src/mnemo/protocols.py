@@ -19,7 +19,7 @@ Protocol so you can do ``isinstance(obj, MemoryBackend)`` in tests.
 from __future__ import annotations
 
 import abc
-from typing import TYPE_CHECKING, Any, Protocol, runtime_checkable
+from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Sequence
@@ -46,7 +46,9 @@ class MemoryBackend(Protocol):
         >>> class MyBackend:
         ...     async def add(self, memory: Memory) -> str: ...
         ...     async def get(self, memory_id: str) -> Memory | None: ...
-        ...     async def search(self, query: MemoryQuery) -> list[MemoryResult]: ...
+        ...     async def search(
+        ...         self, query: MemoryQuery
+        ...     ) -> list[MemoryResult]: ...
         ...     async def delete(self, memory_id: str) -> bool: ...
         ...     async def aclose(self) -> None: ...
         >>> isinstance(MyBackend(), MemoryBackend)
@@ -114,9 +116,7 @@ class MemoryBackend(Protocol):
 class SupportsStreaming(Protocol):
     """Optional protocol for backends that can stream search results."""
 
-    def stream_search(
-        self, query: MemoryQuery
-    ) -> AsyncIterator[MemoryResult]:
+    def stream_search(self, query: MemoryQuery) -> AsyncIterator[MemoryResult]:
         """Yield results one at a time as they become available.
 
         Args:
@@ -168,7 +168,7 @@ class BaseBackend(abc.ABC):
     first-party backends.
     """
 
-    def __init__(self, **kwargs: Any) -> None:
+    def __init__(self) -> None:
         self._closed = False
 
     # ------------------------------------------------------------------
@@ -176,9 +176,11 @@ class BaseBackend(abc.ABC):
     # ------------------------------------------------------------------
 
     async def __aenter__(self) -> BaseBackend:
+        """Enter the async context manager."""
         return self
 
     async def __aexit__(self, *_: object) -> None:
+        """Exit the async context manager and close the backend."""
         await self.aclose()
 
     def _check_not_closed(self) -> None:
@@ -197,13 +199,21 @@ class BaseBackend(abc.ABC):
     # ------------------------------------------------------------------
 
     @abc.abstractmethod
-    async def add(self, memory: Memory) -> str: ...
+    async def add(self, memory: Memory) -> str:
+        """Persist a memory and return its assigned ID."""
+        ...
 
     @abc.abstractmethod
-    async def get(self, memory_id: str) -> Memory | None: ...
+    async def get(self, memory_id: str) -> Memory | None:
+        """Retrieve a single memory by its ID."""
+        ...
 
     @abc.abstractmethod
-    async def search(self, query: MemoryQuery) -> list[MemoryResult]: ...
+    async def search(self, query: MemoryQuery) -> list[MemoryResult]:
+        """Return memories ranked by relevance to the query."""
+        ...
 
     @abc.abstractmethod
-    async def delete(self, memory_id: str) -> bool: ...
+    async def delete(self, memory_id: str) -> bool:
+        """Remove a memory by ID, returning True if it existed."""
+        ...

@@ -17,17 +17,13 @@ The pattern here follows the recommendation in Seth Larson's
 
 from __future__ import annotations
 
-import contextlib
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import anyio
 
-from mnemo.types import Memory, MemoryQuery, MemoryResult
-
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
-
     from mnemo.protocols import MemoryBackend
+    from mnemo.types import Memory, MemoryQuery, MemoryResult
 
 
 class MemoryStore:
@@ -52,9 +48,11 @@ class MemoryStore:
     # ------------------------------------------------------------------
 
     async def __aenter__(self) -> MemoryStore:
+        """Enter the async context manager."""
         return self
 
     async def __aexit__(self, *_: object) -> None:
+        """Exit the async context manager and close the store."""
         await self.aclose()
 
     async def aclose(self) -> None:
@@ -138,9 +136,11 @@ class SyncMemoryStore:
         self._async_store = MemoryStore(backend)
 
     def __enter__(self) -> SyncMemoryStore:
+        """Enter the sync context manager."""
         return self
 
     def __exit__(self, *_: object) -> None:
+        """Exit the sync context manager and close the store."""
         self.close()
 
     def close(self) -> None:

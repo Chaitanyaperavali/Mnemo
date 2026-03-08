@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import AsyncIterator
+from typing import TYPE_CHECKING
 
 import pytest
 import pytest_asyncio
@@ -10,8 +10,11 @@ import pytest_asyncio
 from mnemo.backends.memory import InMemoryBackend
 from mnemo.store import MemoryStore
 
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
 
-@pytest.fixture()
+
+@pytest.fixture
 def anyio_backend() -> str:
     """Run async tests on asyncio (override per test with @pytest.mark.anyio)."""
     return "asyncio"

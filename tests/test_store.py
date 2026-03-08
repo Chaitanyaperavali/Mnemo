@@ -9,7 +9,6 @@ from mnemo.protocols import MemoryBackend
 from mnemo.store import MemoryStore
 from mnemo.types import Memory, MemoryQuery
 
-
 # ---------------------------------------------------------------------------
 # Protocol conformance
 # ---------------------------------------------------------------------------
@@ -77,12 +76,8 @@ async def test_search_finds_matching_content(memory_store: MemoryStore) -> None:
 
 
 async def test_search_metadata_filter(memory_store: MemoryStore) -> None:
-    await memory_store.add(
-        Memory(content="fact A", metadata={"source": "web"})
-    )
-    await memory_store.add(
-        Memory(content="fact B", metadata={"source": "book"})
-    )
+    await memory_store.add(Memory(content="fact A", metadata={"source": "web"}))
+    await memory_store.add(Memory(content="fact B", metadata={"source": "book"}))
 
     query = MemoryQuery(text="fact", filters={"source": "book"})
     results = await memory_store.search(query)
@@ -110,7 +105,7 @@ async def test_context_manager_closes_backend() -> None:
     assert backend._closed is True
 
 
-@pytest.mark.slow()
+@pytest.mark.slow
 async def test_large_store_performance(memory_store: MemoryStore) -> None:
     """Adding 1000 memories should complete in well under 30 s."""
     for i in range(1000):
