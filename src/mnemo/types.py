@@ -22,7 +22,7 @@ class Memory:
     """
 
     content: str
-    metadata: dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)  # pyright: ignore[reportUnknownVariableType]
     embedding: list[float] | None = None
     memory_id: str | None = None
 
@@ -39,7 +39,7 @@ class MemoryQuery:
     """
 
     text: str
-    filters: dict[str, Any] = field(default_factory=dict)
+    filters: dict[str, Any] = field(default_factory=dict)  # pyright: ignore[reportUnknownVariableType]
     limit: int = 10
     score_threshold: float = 0.0
 
