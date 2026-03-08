@@ -72,7 +72,7 @@ store = MemoryStore(backend=MyBackend())
 
 ## Links
 
-- [Documentation](https://yourorg.github.io/mnemo)
+- [Documentation](https://cperavalli.github.io/Mnemo)
 - [Changelog](CHANGELOG.md)
 - [Contributing](CONTRIBUTING.md)
 
